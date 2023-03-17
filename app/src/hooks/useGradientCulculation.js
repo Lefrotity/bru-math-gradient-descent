@@ -34,20 +34,24 @@ function useGradientCulculation() {
 
       const axisPointsX = arrange(0, 5, 0.1);
       const axisPointsF = axisPointsX.map((x) => defF(x));
+      const rechartFPoints = axisPointsX.map((x, i) => ({
+        x,
+        y: axisPointsF[i],
+      }));
 
       // culc all gradient point positions
       // alorithm was taken here https://www.youtube.com/watch?v=OKeZEbJgQKc
       let xx = initialStep;
       let mn = 100;
-      let gradientPoints = [xx];
+      let gradientPoints = [{ x: xx, y: defF(xx) }];
 
       for (let i = 1; i < iterationCount; i++) {
         let lmd = 1 / Math.min(i + 1, mn);
         xx = xx - lmd * sign(defDF(xx));
-        gradientPoints.push(xx);
+        gradientPoints.push({ x: xx, y: defF(xx) });
       }
 
-      return { axisPointsX, axisPointsF, gradientPoints };
+      return { rechartFPoints, gradientPoints };
     },
     [arrange, defineFunctions, sign]
   );

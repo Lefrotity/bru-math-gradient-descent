@@ -3,6 +3,7 @@ import Inputs from "../Inputs";
 import { Page, LegacyCard } from "@shopify/polaris";
 import StartCulculation from "../StartCulculation";
 import CulculatedCard from "../CulculatedCard";
+import Gap from "../@Helpers/Gap";
 
 const MainPage = () => {
   const [updater, setUpdater] = useState(0);
@@ -20,6 +21,8 @@ const MainPage = () => {
       </LegacyCard>
       <StartCulculation startClick={startClick} />
       {!!updater && <CulculatedCard updater={updater} />}
+      <Gap />
+      <Gap />
     </Page>
   );
 };
