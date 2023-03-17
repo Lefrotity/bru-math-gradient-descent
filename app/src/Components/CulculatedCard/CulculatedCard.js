@@ -1,25 +1,36 @@
-import { LegacyCard, LegacyStack, Button, Collapsible } from "@shopify/polaris";
+import {
+  LegacyCard,
+  LegacyStack,
+  Button,
+  Collapsible,
+  RangeSlider,
+  Checkbox,
+} from "@shopify/polaris";
 import React, { useEffect, useState, useCallback } from "react";
 import inputs from "../../store/inputs";
 import { observer } from "mobx-react-lite";
 import useGradientCulculation from "../../hooks/useGradientCulculation";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 import Gap from "../@Helpers/Gap";
 
 const CulculatedCard = observer(({ updater }) => {
   const { f, df, iterationCount, initialStep } = inputs;
   const [gradientPoints, setGradientPoints] = useState([]);
+  const [gradientPoint, setGradientPoint] = useState([]);
   const [rechartData, setRechartData] = useState([]);
-
-  const [currentAnimatedPoint, setCurrentAnimatedPoint] = useState([
-    {
-      x: 0,
-      y: 0,
-    },
-  ]);
 
   const [open, setOpen] = useState(false);
   const handleToggle = useCallback(() => setOpen((open) => !open), []);
+
+  const [rangeValue, setRangeValue] = useState(1);
+  const [checked, setChecked] = useState(false);
 
   const { startCulculations } = useGradientCulculation();
 
@@ -32,15 +43,34 @@ const CulculatedCard = observer(({ updater }) => {
     });
     setRechartData(rechartFPoints);
     setGradientPoints(gradientPoints);
-    // startAnimation(gradientPoints);
   }, [updater, setRechartData, setGradientPoints]);
 
-  // const startAnimation = useCallback((gradientPoints) => {
-
-  // })
+  useEffect(() => {
+    if (checked) {
+      setGradientPoint([gradientPoints[rangeValue - 1]]);
+    } else {
+      setGradientPoint([]);
+    }
+  }, [checked, rangeValue, setGradientPoint, gradientPoints]);
 
   return (
-    <LegacyCard sectioned title="Графиг и расчеты">
+    <LegacyCard sectioned title="График и расчеты">
+      <div>
+        <p>
+          <span style={{ color: "#8884d8", fontWeight: "bold" }}>
+            Синий график
+          </span>{" "}
+          является точной репрезентацией заданой формулы <b>f(x)</b>.
+        </p>
+        <p>
+          <span style={{ color: "#a61c2a", fontWeight: "bold" }}>
+            Красные точки
+          </span>{" "}
+          находятся в местах минимума функции на момент каждой итерации
+          градиентного метода.
+        </p>
+      </div>
+      <Gap />
       <LegacyStack distribution="center" alignment="center">
         <LineChart width={600} height={400} data={rechartData}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -53,17 +83,39 @@ const CulculatedCard = observer(({ updater }) => {
             stroke="#8884d8"
             strokeWidth={1}
             dot={false}
+            animationDuration={0}
           />
           <Line
-            data={gradientPoints}
+            data={!checked ? gradientPoints : gradientPoint}
             type="monotone"
             dataKey="y"
             stroke="#a61c2a"
             strokeDasharray="3 3"
-            dot={{ stroke: "red", strokeWidth: 1, r: 4, strokeDasharray: "" }}
+            dot={{ stroke: "red", strokeWidth: 1, r: 2, strokeDasharray: "" }}
+            animationDuration={0}
           />
+          <Tooltip />
         </LineChart>
       </LegacyStack>
+      <Gap />
+      <Checkbox
+        label="Показать итерации поточечно"
+        checked={checked}
+        onChange={setChecked}
+      />
+      <Gap />
+      {checked && (
+        <RangeSlider
+          min={1}
+          max={gradientPoints.length}
+          label={`Точка для итерации ${rangeValue} имеет значение ${
+            gradientPoints[rangeValue - 1]?.x
+          }`}
+          value={rangeValue}
+          onChange={setRangeValue}
+        />
+      )}
+      <Gap />
       <Gap />
       <div style={{ color: "#0c852c" }}>
         <Button
@@ -85,7 +137,7 @@ const CulculatedCard = observer(({ updater }) => {
       >
         {!!gradientPoints?.length &&
           gradientPoints.map(({ x, y }, i) => (
-            <p>
+            <p key={i}>
               Итерация <b>{i + 1}</b> значение минимума: <b>{x}</b>
             </p>
           ))}
@@ -101,3 +153,5 @@ const CulculatedCard = observer(({ updater }) => {
 });
 
 export default CulculatedCard;
+
+// TODO: add inputs for arrange, ability use sin, cos...
