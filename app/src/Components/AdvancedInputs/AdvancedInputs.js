@@ -47,7 +47,7 @@ const AdvancedInputs = observer(() => {
           onChange={(val) => inputs.updateInitialStep(val)}
         />
         <Gap />
-        <TextField
+        {/* <TextField
           label="Лямбда (итерационный шаг)"
           placeholder="0,1"
           step={0.1}
@@ -55,7 +55,7 @@ const AdvancedInputs = observer(() => {
           value={lambda}
           onChange={(val) => inputs.updateLambda(val)}
         />
-        <Gap />
+        <Gap /> */}
       </Collapsible>
     </>
   );

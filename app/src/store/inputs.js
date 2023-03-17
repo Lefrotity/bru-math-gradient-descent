@@ -1,8 +1,8 @@
 import { makeAutoObservable } from "mobx";
 
 class Inputs {
-  f = "";
-  df = "";
+  f = "x*x - 5*x + 5";
+  df = "2*x - 5";
   iterationCount = 30;
   initialStep = 0;
   lambda = 0.1;
@@ -32,4 +32,6 @@ class Inputs {
   }
 }
 
-export default new Inputs();
+const inputs = new Inputs();
+
+export default inputs;
