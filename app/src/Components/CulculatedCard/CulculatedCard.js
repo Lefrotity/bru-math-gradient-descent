@@ -116,7 +116,6 @@ const CulculatedCard = observer(({ updater }) => {
         />
       )}
       <Gap />
-      <Gap />
       <div style={{ color: "#0c852c" }}>
         <Button
           monochrome
