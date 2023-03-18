@@ -1,11 +1,14 @@
 import { makeAutoObservable } from "mobx";
 
 class Inputs {
-  f = "x*x - 5*x + 5";
-  df = "2*x - 5";
+  f = "";
+  df = "";
   iterationCount = 30;
   initialStep = 0;
   lambda = 0.1;
+  arrangeStart = 0;
+  arrangeStop = 5;
+  arrangeStep = 0.1;
 
   constructor() {
     makeAutoObservable(this);
@@ -29,6 +32,18 @@ class Inputs {
 
   updateLambda(val) {
     this.lambda = val;
+  }
+
+  updateArrangeStart(val) {
+    this.arrangeStart = val;
+  }
+
+  updateArrangeStop(val) {
+    this.arrangeStop = val;
+  }
+
+  updateArrangeStep(val) {
+    this.arrangeStep = val;
   }
 }
 

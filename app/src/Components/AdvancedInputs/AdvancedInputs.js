@@ -6,7 +6,13 @@ import Gap from "../@Helpers/Gap";
 import { useState, useCallback } from "react";
 
 const AdvancedInputs = observer(() => {
-  const { iterationCount, initialStep, lambda } = inputs;
+  const {
+    iterationCount,
+    initialStep,
+    arrangeStart,
+    arrangeStop,
+    arrangeStep,
+  } = inputs;
   const [open, setOpen] = useState(false);
 
   const handleToggle = useCallback(() => setOpen((open) => !open), []);
@@ -47,15 +53,31 @@ const AdvancedInputs = observer(() => {
           onChange={(val) => inputs.updateInitialStep(val)}
         />
         <Gap />
-        {/* <TextField
-          label="Лямбда (итерационный шаг)"
-          placeholder="0,1"
-          step={0.1}
+        <b>Данные для построения графика f(x) </b>
+        <Gap />
+        <TextField
+          label="Начальное значение"
+          placeholder="0"
           type="number"
-          value={lambda}
-          onChange={(val) => inputs.updateLambda(val)}
+          value={arrangeStart}
+          onChange={(val) => inputs.updateArrangeStart(val)}
         />
-        <Gap /> */}
+        <Gap />
+        <TextField
+          label="Конечное значение"
+          placeholder="5"
+          type="number"
+          value={arrangeStop}
+          onChange={(val) => inputs.updateArrangeStop(val)}
+        />
+        <Gap />
+        <TextField
+          label="Шаг"
+          placeholder="0.1"
+          type="number"
+          value={arrangeStep}
+          onChange={(val) => inputs.updateArrangeStep(val)}
+        />
       </Collapsible>
     </>
   );
