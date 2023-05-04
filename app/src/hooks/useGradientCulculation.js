@@ -13,7 +13,10 @@ function useGradientCulculation() {
 
   // https://stackoverflow.com/questions/28658522/how-to-arange-list-of-numbers-in-javascript
   const arrange = useCallback((start, stop, step) => {
+    start = Number(start);
+    stop = Number(stop);
     step = step || 1;
+    step = Number(step);
     var arr = [];
     for (var i = start; i < stop; i += step) {
       arr.push(i);
